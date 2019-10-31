@@ -1,7 +1,7 @@
 <template>
   <div class='home'>
     <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                                                                                                                                                          <HelloWorld msg='Welcome to Your Vue.js App' />-->
+                                                                                                                                                                                                            <HelloWorld msg='Welcome to Your Vue.js App' />-->
     <grid-layout :layout.sync='layout' :col-num='2' :row-height='30' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
       <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
@@ -51,7 +51,7 @@ export default {
       // this.checkOverlap(newX, newY, i)
       // this.prevOverlap = ''
       // console.log(this.layout)
-      console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
+      // console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
       this.checkForExpansion(this.prevOverlap)
       this.checkForExpansion(this.lastMoved)
     },
@@ -86,7 +86,7 @@ export default {
         for (let ind in this.layout) {
           let grid = this.layout[ind]
           if (grid.y === this.layout[gridIndex].y && ind !== gridIndex) {
-            console.log(gridIndex, ' now living with ', ind)
+            // console.log(gridIndex, ' now living with ', ind)
             isGridAlreadyThere = true
           }
         }
