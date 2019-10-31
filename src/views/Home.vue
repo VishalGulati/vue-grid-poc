@@ -1,10 +1,10 @@
 <template>
   <div class='home'>
     <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                        <HelloWorld msg='Welcome to Your Vue.js App' />-->
+                                                                                                                                                                                                          <HelloWorld msg='Welcome to Your Vue.js App' />-->
     <grid-layout :layout.sync='layout' :col-num='2' :row-height='30' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
-      <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @resize="resizeEvent" @move="moveEvent" @resized="resizedEvent" @moved="movedEvent">
+      <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
         {{item.i}}
       </grid-item>
     </grid-layout>
@@ -31,24 +31,67 @@ export default {
   },
   data: function () {
     return {
-      layout: testLayout
+      layout: testLayout,
+      lastMoved: '',
+      prevOverlap: ''
     }
   },
   methods: {
     moveEvent: function (i, newX, newY) {
-      console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
+      // console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
+      if (!this.lastMoved || this.lastMoved !== i) {
+        this.lastMoved = i
+        this.prevOverlap = ''
+      }
       this.checkOverlap(newX, newY, i)
     },
+
+    movedEvent: function (i, newX, newY) {
+      // console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
+      // this.checkOverlap(newX, newY, i)
+      // this.prevOverlap = ''
+      // console.log(this.layout)
+      console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
+      this.checkForExpansion(this.prevOverlap)
+      this.checkForExpansion(this.lastMoved)
+    },
+
     checkOverlap: function (x, y, i) {
-      for (let ind in testLayout) {
-        let grid = testLayout[ind]
-        console.log(grid)
+      for (let ind in this.layout) {
+        let grid = this.layout[ind]
+        // console.log(grid)
         if (grid.y <= y && grid.y + grid.h >= y && grid.w === 2) {
-          testLayout[ind].w = 1
-          testLayout[ind].x = 0
-          testLayout[i].y = y
-          testLayout[i].w = 1
-          testLayout[i].x = 1
+          // this.checkForExpansion(this.prevOverlap)
+          if (this.prevOverlap) {
+            this.layout[this.prevOverlap].w = 2
+            this.layout[this.prevOverlap].x = 0
+          }
+          this.layout[ind].w = 1
+          this.layout[i].y = y
+          this.layout[i].w = 1
+          if (x >= 1) {
+            this.layout[ind].x = 0
+            this.layout[i].x = 1
+          } else {
+            this.layout[ind].x = 1
+            this.layout[i].x = 0
+          }
+          this.prevOverlap = ind
+        }
+      }
+    },
+    checkForExpansion: function (gridIndex) {
+      let isGridAlreadyThere = false
+      if (gridIndex) {
+        for (let ind in this.layout) {
+          let grid = this.layout[ind]
+          if (grid.y === this.layout[gridIndex].y && ind !== gridIndex) {
+            console.log(gridIndex, ' now living with ', ind)
+            isGridAlreadyThere = true
+          }
+        }
+        if (!isGridAlreadyThere) {
+          this.layout[gridIndex].w = 2
         }
       }
     }
