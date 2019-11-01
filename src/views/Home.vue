@@ -1,7 +1,7 @@
 <template>
   <div class='home'>
     <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                                                                                                                                                            <HelloWorld msg='Welcome to Your Vue.js App' />-->
+                                                                                                                                                                                                                                            <HelloWorld msg='Welcome to Your Vue.js App' />-->
     <grid-layout :layout.sync='layout' :col-num='2' :row-height='30' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
       <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
@@ -33,12 +33,24 @@ export default {
     return {
       layout: testLayout,
       lastMoved: '',
-      prevOverlap: ''
+      prevOverlap: '',
+      originalNeighbour: ''
     }
   },
   methods: {
+    findOriginalNeighbour: function (movingGridIndex, x, y) {
+      for (let ind in this.layout) {
+        let grid = this.layout[ind]
+        // console.log(grid)
+        if (grid.y === y && ind !== movingGridIndex) {
+          this.originalNeighbour = ind
+        }
+      }
+    },
     moveEvent: function (i, newX, newY) {
-      // console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
+      console.log('MOVE i=' + i + ', original X=' + this.layout[i].x + ', original Y=' + this.layout[i].y)
+      console.log('MOVE i=' + i + ',  X=' + newX + ',  Y=' + newY)
+      this.findOriginalNeighbour(i, this.layout[i].x, this.layout[i].y)
       if (!this.lastMoved || this.lastMoved !== i) {
         this.lastMoved = i
         this.prevOverlap = ''
@@ -51,7 +63,8 @@ export default {
       // this.checkOverlap(newX, newY, i)
       // this.prevOverlap = ''
       // console.log(this.layout)
-      // console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
+      console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
+      this.checkForExpansion(this.originalNeighbour)
       this.checkForExpansion(this.prevOverlap)
       this.checkForExpansion(this.lastMoved)
     },
