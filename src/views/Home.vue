@@ -1,7 +1,7 @@
 <template>
   <div class='home'>
     <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                                                                                                                                                                                            <HelloWorld msg='Welcome to Your Vue.js App' />-->
+                                                                                                                                                                                                                                              <HelloWorld msg='Welcome to Your Vue.js App' />-->
     <grid-layout :layout.sync='layout' :col-num='2' :row-height='30' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
       <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
@@ -54,6 +54,7 @@ export default {
       if (!this.lastMoved || this.lastMoved !== i) {
         this.lastMoved = i
         this.prevOverlap = ''
+        this.originalNeighbour = ''
       }
       this.checkOverlap(newX, newY, i)
     },
