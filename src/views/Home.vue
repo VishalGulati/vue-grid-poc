@@ -1,11 +1,12 @@
 <template>
   <div class='home'>
     <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                                                                                                                                                                                              <HelloWorld msg='Welcome to Your Vue.js App' />-->
-    <grid-layout :layout.sync='layout' :col-num='2' :row-height='30' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
+                                                                                                                                                                                                                                                                                              <HelloWorld msg='Welcome to Your Vue.js App' />-->
+    <grid-layout :layout.sync='layout' :col-num='2' :row-height='80' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
       <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
-        {{item.i}}
+        {{item.i}}<br/>
+        <LineChart />
       </grid-item>
     </grid-layout>
   </div>
@@ -15,6 +16,7 @@
 // @ is an alias to /src
 
 import VueGridLayout from 'vue-grid-layout'
+import LineChart from './Chart.vue'
 var testLayout = [
   { 'x': 0, 'y': 0, 'w': 2, 'h': 5, 'i': '0' },
   { 'x': 0, 'y': 5, 'w': 2, 'h': 5, 'i': '1' },
@@ -27,7 +29,8 @@ export default {
   name: 'home',
   components: {
     GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem
+    GridItem: VueGridLayout.GridItem,
+    LineChart
   },
   data: function () {
     return {
@@ -106,6 +109,7 @@ export default {
         }
         if (!isGridAlreadyThere) {
           this.layout[gridIndex].w = 2
+          this.layout[gridIndex].x = 0
         }
       }
     }
