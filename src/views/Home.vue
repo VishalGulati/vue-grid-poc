@@ -41,7 +41,6 @@ export default {
   },
   mounted () {
     const CACHED_GRID = localStorage.getItem('vueGridStructure')
-    console.log('CACHED_GRID ', CACHED_GRID)
     if (CACHED_GRID) { this.layout = JSON.parse(CACHED_GRID) }
   },
   methods: {
@@ -79,8 +78,6 @@ export default {
       this.checkForExpansion(this.originalNeighbour)
       this.checkForExpansion(this.prevOverlap)
       this.checkForExpansion(this.lastMoved)
-      console.log('After moving!')
-      console.log('current layout - ', this.layout)
       localStorage.setItem('vueGridStructure', JSON.stringify(this.layout))
     },
 
