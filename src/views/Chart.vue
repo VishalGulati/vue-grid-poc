@@ -1,14 +1,14 @@
 <template>
-    <v-card flat color="grey lighten-5">
-        <v-card-text>
+    <div flat color="grey lighten-5">
+        <div>
             <div class="echarts">
                 <Echarts :options="chartOptions" autoresize/>
             </div>
             <!--<v-btn @click="doRandom" small outline fab color="grey">
-                                                                                                  <v-icon>refresh</v-icon>
-                                                                                                </v-btn>-->
-        </v-card-text>
-    </v-card>
+                                                                                                      <v-icon>refresh</v-icon>
+                                                                                                    </v-btn>-->
+        </div>
+    </div>
 </template>
 
 <script>

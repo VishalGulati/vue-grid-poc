@@ -1,7 +1,6 @@
 <template>
   <div class='home'>
-    <!--<img alt='Vue logo' src='../assets/logo.png'>
-                                                                                                                                                                                                                                                                                                <HelloWorld msg='Welcome to Your Vue.js App' />-->
+    <button @click="clearGridStructure">Reset grid structure</button>
     <grid-layout :layout.sync='layout' :col-num='2' :row-height='80' :is-draggable='true' :is-resizable='true' :is-mirrored='false' :vertical-compact='true' :margin='[10, 10]' :use-css-transforms='true'>
 
       <grid-item v-for='item in layout' :x='item.x' :y='item.y' :w='item.w' :h='item.h' :i='item.i' :key='item.i' @move="moveEvent" @moved="movedEvent">
@@ -40,7 +39,16 @@ export default {
       originalNeighbour: ''
     }
   },
+  mounted () {
+    const CACHED_GRID = localStorage.getItem('vueGridStructure')
+    console.log('CACHED_GRID ', CACHED_GRID)
+    if (CACHED_GRID) { this.layout = JSON.parse(CACHED_GRID) }
+  },
   methods: {
+    clearGridStructure: function () {
+      localStorage.setItem('vueGridStructure', '')
+      this.layout = testLayout
+    },
     findOriginalNeighbour: function (movingGridIndex, x, y) {
       for (let ind in this.layout) {
         let grid = this.layout[ind]
@@ -71,6 +79,9 @@ export default {
       this.checkForExpansion(this.originalNeighbour)
       this.checkForExpansion(this.prevOverlap)
       this.checkForExpansion(this.lastMoved)
+      console.log('After moving!')
+      console.log('current layout - ', this.layout)
+      localStorage.setItem('vueGridStructure', JSON.stringify(this.layout))
     },
 
     checkOverlap: function (x, y, i) {
