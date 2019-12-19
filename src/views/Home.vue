@@ -58,8 +58,6 @@ export default {
       }
     },
     moveEvent: function (i, newX, newY) {
-      // console.log('MOVE i=' + i + ', original X=' + this.layout[i].x + ', original Y=' + this.layout[i].y)
-      // console.log('MOVE i=' + i + ',  X=' + newX + ',  Y=' + newY)
       this.findOriginalNeighbour(i, this.layout[i].x, this.layout[i].y)
       if (!this.lastMoved || this.lastMoved !== i) {
         this.lastMoved = i
@@ -70,11 +68,6 @@ export default {
     },
 
     movedEvent: function (i, newX, newY) {
-      // console.log('MOVE i=' + i + ', X=' + newX + ', Y=' + newY)
-      // this.checkOverlap(newX, newY, i)
-      // this.prevOverlap = ''
-      // console.log(this.layout)
-      // console.log('last moved ', this.lastMoved, ' its last neighbour - ', this.prevOverlap)
       this.checkForExpansion(this.originalNeighbour)
       this.checkForExpansion(this.prevOverlap)
       this.checkForExpansion(this.lastMoved)
@@ -84,9 +77,7 @@ export default {
     checkOverlap: function (x, y, i) {
       for (let ind in this.layout) {
         let grid = this.layout[ind]
-        // console.log(grid)
         if (grid.y <= y && grid.y + grid.h >= y && grid.w === 2) {
-          // this.checkForExpansion(this.prevOverlap)
           if (this.prevOverlap) {
             this.layout[this.prevOverlap].w = 2
             this.layout[this.prevOverlap].x = 0
@@ -111,7 +102,6 @@ export default {
         for (let ind in this.layout) {
           let grid = this.layout[ind]
           if (grid.y === this.layout[gridIndex].y && ind !== gridIndex) {
-            // console.log(gridIndex, ' now living with ', ind)
             isGridAlreadyThere = true
           }
         }
